@@ -1,0 +1,14 @@
+---
+- name: Provision softwore installation
+  hosts: localhost
+  vars:
+    softwares:
+      - git
+      - net-tools
+
+  tasks:
+    - name: Install {{ softwares }}
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ softwares }}"
