@@ -1,6 +1,8 @@
 ---
 - name: Provision softwore installation
-  hosts: localhost
+  hosts: all
+  become: yes
+  become_user: root
   vars:
     softwares:
       - git
