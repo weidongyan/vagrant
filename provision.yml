@@ -1,0 +1,33 @@
+---
+- name: Provision softwore installation
+  hosts: all
+  become: yes
+  become_user: root
+  vars:
+    softwares:
+      - git
+      - net-tools
+      - vim
+      - wget
+      - bash-completion
+
+
+  tasks:
+    - name: Install {{ softwares }}
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ softwares }}"
+    - name: Setup private key
+      copy:
+        src: .vagrant/machines/default/libvirt/private_key
+        dest: /home/vagrant/.ssh/id_rsa
+        mode: 0600
+        backup: yes
+        owner: vagrant
+        group: vagrant
+    - name: Setup vim
+      copy:
+        content: "autocmd FileType yaml setlocal ai ts=2 sw=2 et"
+        dest: /home/vagrant/.vimrc
+        mode: 0644
