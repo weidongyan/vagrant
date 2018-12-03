@@ -1,0 +1,28 @@
+---
+- name: setup a docker local registry
+  hosts: all
+  remote_user: root
+  become: yes
+
+  tasks:
+    - name: update docker configuration
+      lineinfile:
+        path: /etc/sysconfig/docker
+        regexp: '^INSECURE_REGISTRY'
+        line: INSECURE_REGISTRY='--insecure-registry registry.fcg.io:5000'
+      notify:
+        - restart_docker
+    - name: update docker configuration
+      lineinfile:
+        path: /etc/sysconfig/docker
+        regexp: '^ADD_REGISTRY'
+        line: ADD_REGISTRY='--add-registry registry.fcg.io:5000'
+      notify:
+        - restart_docker
+
+  handlers:
+    - name: restart_docker
+      service:
+        name: docker
+        state: restarted
+

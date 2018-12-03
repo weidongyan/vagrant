@@ -1,0 +1,4 @@
+---
+- import_playbook: basicSoftwareInstall.yml
+- import_playbook: sshd.yml
+- import_playbook: oc-docker-setup.yml
