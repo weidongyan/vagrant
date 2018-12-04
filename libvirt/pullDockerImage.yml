@@ -1,0 +1,28 @@
+---
+- name: pull docker image from docker io
+  hosts: localhost
+  become: yes
+ 
+
+  tasks:
+    - name: pull specific version of images
+      docker_image:
+        name: "{{ item }}"
+        tag: v3.11
+      with_items:
+        - openshift/origin
+        - openshift/node
+        - openshift/origin-ansible
+        - openshift/origin-control-plane
+        - openshift/origin-deployer
+        - openshift/origin-docker-builder
+        - openshift/origin-docker-registry
+        - openshift/origin-haproxy-router
+        - openshift/origin-pod
+
+    - name: pull latest version of docker image
+      docker_image:
+        name: "{{ item }}"
+      with_items:
+        - cockpit/kubernetes
+        - openshift/openvswitch

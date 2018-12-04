@@ -1,0 +1,18 @@
+---
+- name: Provision softwore installation
+  hosts: all
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Install softwares 
+      yum:
+        name: 
+          - wget
+          - git
+          - net-tools
+          - bind-utils
+          - yum-utils
+          - bash-completion
+          - vim
+        state: latest

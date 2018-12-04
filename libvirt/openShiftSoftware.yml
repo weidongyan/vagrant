@@ -1,0 +1,21 @@
+---
+- name: OpenShift softwore installation
+  hosts: all
+  become: yes
+  become_user: root
+  vars:
+    - openshift_ver: 311
+
+  tasks:
+    - name: Install basic software
+      yum:
+        name: 
+          - epel-release
+          - centos-release-openshift-origin{{ openshift_ver }}
+        state: present
+
+    - name: Install ansible from local
+      yum:
+        name: ./ansible-2.6.5-1.el7.ans.noarch.rpm
+        state: present
+
