@@ -1,0 +1,124 @@
+---
+- name: run packstack
+  hosts: localhost
+  become: yes
+  vars:
+    - ifname: eth1
+    - ipaddress: 192.168.5.112
+    - mypassword: Andy831
+
+  tasks:
+    - name: generate answerfile
+      command: packstack --gen-answer-file /root/answers.txt
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_DEFAULT_PASSWORD='
+        line: "CONFIG_DEFAULT_PASSWORD={{ mypassword }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_KEYSTONE_ADMIN_PW='
+        line: "CONFIG_KEYSTONE_ADMIN_PW={{ mypassword }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_CINDER_VOLUMES_CREATE='
+        line: "CONFIG_CINDER_VOLUMES_CREATE=n"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_NEUTRON_L3_EXT_BRIDGE='
+        line: "CONFIG_NEUTRON_L3_EXT_BRIDGE="
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_NEUTRON_OVS_BRIDGE_IFACES='
+        line: "CONFIG_NEUTRON_OVS_BRIDGE_IFACES=br-ex:{{ ifname }}"
+
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_REDIS_HOST='
+        line: "CONFIG_REDIS_HOST={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_CONTROLLER_HOST='
+        line: "CONFIG_CONTROLLER_HOST={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_COMPUTE_HOSTS='
+        line: "CONFIG_COMPUTE_HOSTS={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_NETWORK_HOSTS='
+        line: "CONFIG_NETWORK_HOSTS={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_STORAGE_HOST='
+        line: "CONFIG_STORAGE_HOST={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_SAHARA_HOST='
+        line: "CONFIG_SAHARA_HOST={{ ipaddress }}"
+
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_AMQP_HOST='
+        line: "CONFIG_AMQP_HOST={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_MARIADB_HOST='
+        line: "CONFIG_MARIADB_HOST={{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_KEYSTONE_LDAP_URL='
+        line: "CONFIG_KEYSTONE_LDAP_URL=ldap://{{ ipaddress }}"
+
+    - name: modify answerfile
+      lineinfile:
+        path: /root/answers.txt
+        regexp: '^CONFIG_PROVISION_DEMO='
+        line: "CONFIG_PROVISION_DEMO=n"
+    - name: update yum cache
+      shell: yum clean all
+
+    - name: build yum cache
+      shell: yum makecache
+
+    - name: build yum cache
+      shell: yum makecache
+
+    - name: packstack running
+      shell: packstack --answer-file /root/answers.txt
+      register: result
+
+    - name: display packstack installation result
+      debug:
+        var: result
+
+
+
+

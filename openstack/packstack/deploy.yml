@@ -1,0 +1,5 @@
+---
+- import_playbook: creat_lvm.yml
+- import_playbook: openstack.yml
+- import_playbook: packstack.yml
+

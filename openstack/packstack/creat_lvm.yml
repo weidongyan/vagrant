@@ -1,0 +1,20 @@
+---
+- name: create a LVM volume for cinder
+  hosts: localhost
+  become: yes
+  vars:
+    - device: vdb
+    - partition: vdb1
+
+  tasks:
+    - name: create a partition for vdb
+      parted:
+        device: /dev/{{ device }}
+        number: 1
+        state: present
+
+    - name: create a vg named cinder-volumes
+      lvg:
+        vg: cinder-volumes
+        pvs: /dev/{{ partition }}
+        state: present
