@@ -1,1 +1,0 @@
-{"nfs":{"/vagrant":{"type":"nfs","guestpath":"/vagrant","hostpath":"/Users/mac-it/vagrant-vm/master","disabled":false,"__vagrantfile":true,"map_uid":501,"map_gid":20,"nfs_version":3,"nfs_udp":true,"uuid":"1306980226"}}}

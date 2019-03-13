@@ -1,0 +1,39 @@
+---
+- name: set up a vncserver
+  hosts: localhost
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: install software
+      yum:
+        name:
+          - tigervnc-server
+          - tigervnc
+        state: latest
+
+    - name: create configuration directory
+      file:
+        path: /root/.vnc
+        state: directory
+
+    - name: setup configuration file
+      copy:
+        src: vncserver-file/passwd
+        dest: /root/.vnc
+        mode: 0600
+
+    - name: setup service script
+      copy:
+        src: vncserver-file/vncserver@.service
+        dest: /etc/systemd/system
+
+    - name: start vnc service
+      service:
+        name: vncserver@:1
+        state: started
+        enabled: yes
+
+    - name: login information
+      debug:
+        msg: "vnc password is vagrant"
